@@ -132,5 +132,13 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     ],
-    "DEFAULT_METADATA_CLASS": "blog.api.metadata.CustomMetadata"
+    "DEFAULT_METADATA_CLASS": "blog.api.metadata.CustomMetadata",
+    # setting these defaults help to put the configuration in one place and
+    # removing the need to reconfigure everytime in each view
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE":10,
+    "DEFAULT_FILTER_BACKENDS":[
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter"
+    ]
 }

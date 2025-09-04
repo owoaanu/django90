@@ -12,16 +12,20 @@ class PostDetailSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'content', 'created_at']
 
 class PostSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(help_text="Enter the post title (min 5 characters)")
+    title = serializers.CharField(
+        help_text="Short, descriptive title (3–120 chars).",
+        style={"placeholder": "My first post"},
+        min_length=3,
+        max_length=120,
+    )
     content = serializers.CharField(
-        style={"base_template": "textarea.html"},  # multi-line input in the UI
+        style={"base_template": "textarea.html"},
         help_text="Full post content."
     )
     created_at = serializers.DateTimeField(read_only=True)
 
+
+
     class Meta:
         model = Post
         fields = ['id', 'title', 'content', 'created_at']
-        extra_kwargs = {
-            "title":{"min_length":3, "max_length":10}
-        }

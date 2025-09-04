@@ -1,6 +1,5 @@
 import datetime
 
-from django.core.serializers import serialize
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.http import JsonResponse
@@ -129,19 +128,26 @@ class PostRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 # Viewsets
 class PostViewset(viewsets.ModelViewSet):
     """
-    Create, list, retrieve, update, and delete blog posts.
+    API endpoint for managing blog posts.
+
+    Endpoints:
+    - List all posts (GET /api/posts/)
+    - Retrieve single post (GET /api/posts/{id}/)
+    - Create a new post (POST /api/posts/)
+    - Update post (PUT/PATCH /api/posts/{id}/)
+    - Delete post (DELETE /api/posts/{id}/)
 
     Notes:
-    - `title` is required (3–120 chars)
-    - `body` accepts plain text
+    - Title is required (3–120 chars)
+    - Body is required (text)
     """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    # filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["title", "content"]      # shows a search bar
     ordering_fields = ["created_at", "title"]  # shows an ordering dropdown
-    pagination_class = SmallResultsSetPagination
+    # pagination_class = SmallResultsSetPagination
 
     meta_title = "Posts"
     meta_description = "Create and manage blog posts. Title + content are editable; created_at is read-only"

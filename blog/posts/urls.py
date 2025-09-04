@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import PostDetailAPIView, PostListAPIView, PostListCreateAPIView, PostRetrieveUpdateDestroyAPIView
+# from .views import PostDetailAPIView, PostListAPIView, PostListCreateAPIView, PostRetrieveUpdateDestroyAPIView
 from .views import  PostViewset
 from rest_framework.routers import  DefaultRouter
 
