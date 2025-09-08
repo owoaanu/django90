@@ -8,6 +8,7 @@ from .models import Post
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, action
 from rest_framework.views import APIView #for api view
+from rest_framework.permissions import IsAuthenticatedOrReadOnly #for api view
 
 from rest_framework import generics, viewsets # for useing the generic view and viewset
 
@@ -141,8 +142,9 @@ class PostViewset(viewsets.ModelViewSet):
     - Title is required (3–120 chars)
     - Body is required (text)
     """
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by("-created_at")
     serializer_class = PostSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     # filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["title", "content"]      # shows a search bar
@@ -154,10 +156,14 @@ class PostViewset(viewsets.ModelViewSet):
 
 #     adding a custom action endpoint
     @action(detail=False, methods=['get'])
-    def recent(selfself, request):
+    def recent(self, request):
         recent_posts = Post.objects.order_by('-created_at')[:5]
         serializer = PostSerializer(recent_posts, many=True)
         return Response(serializer.data)
+
+    
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 
 
